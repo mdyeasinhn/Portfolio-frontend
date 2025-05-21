@@ -1,12 +1,8 @@
-import React, { useEffect, memo, useMemo } from "react"
-import { FileText, Code, Award, Globe, ArrowUpRight, Sparkles, UserCheck } from "lucide-react"
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-import resume from '../assets/Resume_of_Md_Yeasin_Arafat.pdf'
+import { FileText, Code,  Globe, ArrowUpRight, Sparkles, BookOpen } from "lucide-react"
 import image from "../assets/my_image.jpg"
+import resume from '../assets/Resume_of_Md_Yeasin_Arafat.pdf'
 
-// Memoized Components
-const Header = memo(() => (
+const Header = () => (
   <div className="text-center lg:mb-8 mb-2 px-[5%]">
     <div className="inline-block relative group">
       <h2 
@@ -27,9 +23,9 @@ const Header = memo(() => (
       <Sparkles className="w-5 h-5 text-purple-400" />
     </p>
   </div>
-));
+);
 
-const ProfileImage = memo(() => (
+const ProfileImage = () => (
   <div className="flex justify-end items-center sm:p-12 sm:py-0 sm:pb-0 p-0 py-2 pb-2">
     <div 
       className="relative group" 
@@ -68,9 +64,9 @@ const ProfileImage = memo(() => (
       </div>
     </div>
   </div>
-));
+);
 
-const StatCard = memo(({ icon: Icon, color, value, label, description, animation }) => (
+const StatCard = ({ icon: Icon, color, value, label, description, animation }) => (
   <div data-aos={animation} data-aos-duration={1300} className="relative group">
     <div className="relative z-10 bg-gray-900/50 backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
       <div className={`absolute -z-10 inset-0 bg-gradient-to-br ${color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}></div>
@@ -112,77 +108,36 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
       </div>
     </div>
   </div>
-));
+);
 
 const AboutPage = () => {
-  // Memoized calculations
-  const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
-    const storedProjects = JSON.parse(localStorage.getItem("projects") || "[]");
-    const storedCertificates = JSON.parse(localStorage.getItem("certificates") || "[]");
-    
-    const startDate = new Date("2021-11-06");
-    const today = new Date();
-    const experience = today.getFullYear() - startDate.getFullYear() -
-      (today < new Date(today.getFullYear(), startDate.getMonth(), startDate.getDate()) ? 1 : 0);
-
-    return {
-      totalProjects: storedProjects.length,
-      totalCertificates: storedCertificates.length,
-      YearExperience: experience
-    };
-  }, []);
-
-  // Optimized AOS initialization
-  useEffect(() => {
-    const initAOS = () => {
-      AOS.init({
-        once: false, 
-      });
-    };
-
-    initAOS();
-    
-    // Debounced resize handler
-    let resizeTimer;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initAOS, 250);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(resizeTimer);
-    };
-  }, []);
-
-  // Memoized stats data
-  const statsData = useMemo(() => [
+  // Static data for stat cards
+  const statsData = [
     {
       icon: Code,
       color: "from-[#6366f1] to-[#a855f7]",
-      value: totalProjects,
+      value: 8, // Static project count
       label: "Total Projects",
       description: "Innovative web solutions crafted",
       animation: "fade-right",
     },
     {
-      icon: Award,
+      icon: BookOpen, // Changed icon from Award to Book
       color: "from-[#a855f7] to-[#6366f1]",
-      value: totalCertificates,
-      label: "Certificates",
-      description: "Professional skills validated",
+      value: 8, // Static blog count
+      label: "Blogs", // Changed from Certificates to Blogs
+      description: "Sharing knowledge & insights",
       animation: "fade-up",
     },
     {
       icon: Globe,
       color: "from-[#6366f1] to-[#a855f7]",
-      value: YearExperience,
+      value: 2, // Static years of experience (changed to 2)
       label: "Years of Experience",
       description: "Continuous learning journey",
       animation: "fade-left",
     },
-  ], [totalProjects, totalCertificates, YearExperience]);
+  ];
 
   return (
     <div
@@ -223,23 +178,23 @@ const AboutPage = () => {
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
-              <a href={resume} download='.Resume of Md Yeasin Arafat.pdf' className="w-full lg:w-auto">
-              <button 
-                data-aos="fade-up"
-                data-aos-duration="800"
-                className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl animate-bounce-slow"
-              >
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5" /> Download CV
-              </button>
+              <a href={resume} download='Resume of Md Yeasin Arafat.pdf' className="w-full lg:w-auto">
+                <button 
+                  data-aos="fade-up"
+                  data-aos-duration="800"
+                  className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl animate-bounce-slow"
+                >
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" /> Download CV
+                </button>
               </a>
               <a href="#Portofolio" className="w-full lg:w-auto">
-              <button 
-                data-aos="fade-up"
-                data-aos-duration="1000"
-                className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg border border-[#a855f7]/50 text-[#a855f7] font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 hover:bg-[#a855f7]/10 animate-bounce-slow delay-200"
-              >
-                <Code className="w-4 h-4 sm:w-5 sm:h-5" /> View Projects
-              </button>
+                <button 
+                  data-aos="fade-up"
+                  data-aos-duration="1000"
+                  className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg border border-[#a855f7]/50 text-[#a855f7] font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 hover:bg-[#a855f7]/10 animate-bounce-slow delay-200"
+                >
+                  <Code className="w-4 h-4 sm:w-5 sm:h-5" /> View Projects
+                </button>
               </a>
             </div>
           </div>
@@ -278,4 +233,4 @@ const AboutPage = () => {
   );
 };
 
-export default memo(AboutPage);
+export default AboutPage;

@@ -96,7 +96,7 @@ export default function FullWidthTabs() {
   const [showAllBlogs, setShowAllBlogs] = useState(false);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 2 : 4;
-  const initialBlogs = isMobile ? 1 : 2;
+  const initialBlogs = isMobile ? 2 : 2;
 
   useEffect(() => {
     AOS.init({ once: false });
@@ -342,7 +342,6 @@ export default function FullWidthTabs() {
               )}
             </TabPanel>
 
-            {/* BLOG TAB */}
             {/* BLOG TAB */}
             <TabPanel value={value} index={1} dir={theme.direction}>
               <div className="container mx-auto flex justify-center items-center overflow-hidden">
