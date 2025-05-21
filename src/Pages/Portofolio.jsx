@@ -12,7 +12,8 @@ import CardProject from "../components/CardProject";
 import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Code, Boxes } from "lucide-react";
+import { Code, Boxes, BookOpen } from "lucide-react";
+import CardBlog from "../components/CardBlog";
 
 const ToggleButton = ({ onClick, isShowingMore }) => (
   <button
@@ -30,9 +31,8 @@ const ToggleButton = ({ onClick, isShowingMore }) => (
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`transition-transform duration-300 ${
-        isShowingMore ? "rotate-180" : ""
-      }`}
+      className={`transition-transform duration-300 ${isShowingMore ? "rotate-180" : ""
+        }`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
@@ -89,11 +89,14 @@ export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [showAllBlogs, setShowAllBlogs] = useState(false);
   const isMobile = window.innerWidth < 768;
-  const initialItems = isMobile ? 4 : 6;
+  const initialItems = isMobile ? 2 : 4;
+  const initialBlogs = isMobile ? 1 : 2;
 
   useEffect(() => {
     AOS.init({ once: false });
@@ -108,28 +111,40 @@ export default function FullWidthTabs() {
           'Content-Type': 'application/json',
         }
       });
-      console.log("data",response.data.data)
-      
+
       const projectData = response.data.data.map(project => ({
         ...project,
         TechStack: project.TechStack || []
       }));
-      
+
       setProjects(projectData);
       localStorage.setItem("projects", JSON.stringify(projectData));
     } catch (err) {
       console.error("Error fetching projects:", err);
       setError(err.response?.data?.message || "Failed to fetch projects");
-      
-   
     } finally {
       setIsLoading(false);
     }
   }, []);
 
+  const fetchBlogs = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/v1/blogs', {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      setBlogs(response.data.data);
+    } catch (err) {
+      console.error("Error fetching blogs:", err);
+    }
+  }, []);
+
   useEffect(() => {
     fetchProjects();
-  }, [fetchProjects]);
+    fetchBlogs();
+  }, [fetchProjects, fetchBlogs]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -139,7 +154,12 @@ export default function FullWidthTabs() {
     setShowAllProjects((prev) => !prev);
   }, []);
 
+  const toggleShowMoreBlogs = useCallback(() => {
+    setShowAllBlogs((prev) => !prev);
+  }, []);
+
   const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
+  const displayedBlogs = showAllBlogs ? blogs : blogs.slice(0, initialBlogs);
 
   return (
     <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portofolio">
@@ -148,7 +168,7 @@ export default function FullWidthTabs() {
           Portfolio Showcase
         </h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2">
-          Explore my projects and the technologies I use to build them.
+          Explore my projects, blogs, and the technologies I use to build them.
         </p>
       </div>
 
@@ -248,10 +268,23 @@ export default function FullWidthTabs() {
                 }}
               />
               <Tab
+                icon={<BookOpen className="w-5 h-5 transition-all duration-300" />}
+                iconPosition="start"
+                label="Blog"
+                {...a11yProps(1)}
+                sx={{
+                  "&.Mui-selected": {
+                    "& svg": {
+                      animation: "pulse 1.5s infinite",
+                    },
+                  },
+                }}
+              />
+              <Tab
                 icon={<Boxes className="w-5 h-5 transition-all duration-300" />}
                 iconPosition="start"
                 label="Tech Stack"
-                {...a11yProps(1)}
+                {...a11yProps(2)}
                 sx={{
                   "&.Mui-selected": {
                     "& svg": {
@@ -309,8 +342,48 @@ export default function FullWidthTabs() {
               )}
             </TabPanel>
 
-            {/* TECH STACK TAB */}
+            {/* BLOG TAB */}
+            {/* BLOG TAB */}
             <TabPanel value={value} index={1} dir={theme.direction}>
+              <div className="container mx-auto flex justify-center items-center overflow-hidden">
+                {blogs.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 gap-5 w-full max-w-4xl">
+                    {displayedBlogs.map((blog, index) => (
+                      <div
+                        key={blog._id || index}
+                        data-aos="fade-up" // Simplified animation for column layout
+                        data-aos-duration="1000"
+                        className="mb-8" // Add margin bottom for spacing between stacked items
+                      >
+                        <CardBlog
+                          Img={blog.image}
+                          Title={blog.title}
+                          Description={blog.content}
+                          Link={blog.link}
+                          id={blog._id}
+                          createdAt={blog.createdAt}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-10 text-gray-400">
+                    No blogs found
+                  </div>
+                )}
+              </div>
+              {blogs.length > initialBlogs && (
+                <div className="mt-8 w-full flex justify-center">
+                  <ToggleButton
+                    onClick={toggleShowMoreBlogs}
+                    isShowingMore={showAllBlogs}
+                  />
+                </div>
+              )}
+            </TabPanel>
+
+            {/* TECH STACK TAB */}
+            <TabPanel value={value} index={2} dir={theme.direction}>
               <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
                   {techStacks.map((stack, index) => (
