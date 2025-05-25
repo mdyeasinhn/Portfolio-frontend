@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   ExternalLink,
@@ -66,6 +66,7 @@ const ProjectStats = ({ techCount = 0, featureCount = 0 }) => (
 // Main ProjectDetails Component
 const ProjectDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -73,8 +74,9 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/projects/${id}`);
-        console.log("data--", response)
+        const response = await axios.get(`https://portfolio-server-omega-neon.vercel.app/api/v1/projects/${id}`,{
+          withCredentials: true 
+        });
         setProject(response.data.data);
       } catch (err) {
         setError("Failed to fetch project data.");
@@ -85,6 +87,10 @@ const ProjectDetails = () => {
 
     fetchProject();
   }, [id]);
+
+  const handleBack = () => {
+    navigate(-1); // This will take the user back to the previous page
+  };
 
   if (loading) return <div className="text-white p-4">Loading project...</div>;
   if (error) return <div className="text-red-500 p-4">{error}</div>;
@@ -102,7 +108,10 @@ const ProjectDetails = () => {
       <div className="relative max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-16">
         {/* Header */}
         <div className="flex items-center space-x-2 md:space-x-4 mb-8 md:mb-12">
-          <button className="group inline-flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-xl text-white hover:bg-white/10 transition">
+          <button 
+            onClick={handleBack}
+            className="group inline-flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-xl text-white hover:bg-white/10 transition"
+          >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span>Back</span>
           </button>
@@ -152,7 +161,6 @@ const ProjectDetails = () => {
                 </a>
               )}
             </div>
-
 
             {project.techStack && (
               <div>

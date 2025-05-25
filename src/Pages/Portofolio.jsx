@@ -31,8 +31,7 @@ const ToggleButton = ({ onClick, isShowingMore }) => (
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`transition-transform duration-300 ${isShowingMore ? "rotate-180" : ""
-        }`}
+      className={`transition-transform duration-300 ${isShowingMore ? "rotate-180" : ""}`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
@@ -80,9 +79,10 @@ const techStacks = [
   { icon: "nodejs.svg", language: "Node JS" },
   { icon: "bootstrap.svg", language: "Bootstrap" },
   { icon: "firebase.svg", language: "Firebase" },
-  { icon: "MUI.svg", language: "Material UI" },
-  { icon: "vercel.svg", language: "Vercel" },
-  { icon: "SweetAlert.svg", language: "SweetAlert2" },
+  { icon: "mongodb.svg", language: "Mongodb" }, 
+  { icon: "mongoose.svg", language: "Mongoose" }, 
+  { icon: "postgresql.svg", language: "PostgreSQL" }, 
+  { icon: "prisma.svg", language: "Prisma" },
 ];
 
 export default function FullWidthTabs() {
@@ -106,7 +106,7 @@ export default function FullWidthTabs() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:3000/api/v1/projects', {
+      const response = await axios.get('http://localhost:5000/api/v1/projects', {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -129,7 +129,7 @@ export default function FullWidthTabs() {
 
   const fetchBlogs = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/v1/blogs', {
+      const response = await axios.get('http://localhost:5000/api/v1/blogs', {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -202,7 +202,7 @@ export default function FullWidthTabs() {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: "linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)",
+                background: "linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
                 backdropFilter: "blur(8px)",
                 zIndex: 0,
                 border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -231,7 +231,7 @@ export default function FullWidthTabs() {
                   borderRadius: "8px",
                   "&:hover": {
                     color: "#ffffff",
-                    background: "rgba(255, 255, 255, 0.05)",
+                    background: "rgba(255, 255, 255, 0.1)",
                     "& svg": {
                       transform: "scale(1.1)",
                       color: "#a78bfa",
@@ -259,39 +259,18 @@ export default function FullWidthTabs() {
                 iconPosition="start"
                 label="Projects"
                 {...a11yProps(0)}
-                sx={{
-                  "&.Mui-selected": {
-                    "& svg": {
-                      animation: "pulse 1.5s infinite",
-                    },
-                  },
-                }}
               />
               <Tab
                 icon={<BookOpen className="w-5 h-5 transition-all duration-300" />}
                 iconPosition="start"
                 label="Blog"
                 {...a11yProps(1)}
-                sx={{
-                  "&.Mui-selected": {
-                    "& svg": {
-                      animation: "pulse 1.5s infinite",
-                    },
-                  },
-                }}
               />
               <Tab
                 icon={<Boxes className="w-5 h-5 transition-all duration-300" />}
                 iconPosition="start"
                 label="Tech Stack"
                 {...a11yProps(2)}
-                sx={{
-                  "&.Mui-selected": {
-                    "& svg": {
-                      animation: "pulse 1.5s infinite",
-                    },
-                  },
-                }}
               />
             </Tabs>
           </AppBar>
@@ -309,9 +288,7 @@ export default function FullWidthTabs() {
                     {displayedProjects.map((project, index) => (
                       <div
                         key={project.id || index}
-                        data-aos={
-                          index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"
-                        }
+                        data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                         data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                       >
                         <CardProject
@@ -388,9 +365,7 @@ export default function FullWidthTabs() {
                   {techStacks.map((stack, index) => (
                     <div
                       key={index}
-                      data-aos={
-                        index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"
-                      }
+                      data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
                       data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                     >
                       <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} />
@@ -402,14 +377,6 @@ export default function FullWidthTabs() {
           </SwipeableViews>
         </Box>
       )}
-
-      <style jsx global>{`
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1); }
-        }
-      `}</style>
     </div>
   );
 }

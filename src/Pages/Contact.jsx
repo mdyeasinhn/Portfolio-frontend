@@ -43,10 +43,11 @@ const ContactPage = () => {
 
     try {
       // Send data to your Express backend
-      const response = await axios.post('http://localhost:3000/api/v1/contacts', formData, {
+      const response = await axios.post('https://portfolio-server-omega-neon.vercel.app/api/v1/contacts', formData, {
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        withCredentials: true 
       });
 
       // Show success message

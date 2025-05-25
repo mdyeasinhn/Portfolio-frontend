@@ -49,7 +49,9 @@ const BlogDetails = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/blogs/${id}`);
+        const response = await axios.get(`https://portfolio-server-omega-neon.vercel.app/api/v1/blogs/${id}`,{
+          withCredentials: true 
+        });
         setBlog(response.data.data);
         // Calculate reading time (assuming 200 words per minute)
         const words = response.data.data.description.split(/\s+/).length;

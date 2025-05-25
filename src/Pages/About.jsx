@@ -1,19 +1,21 @@
-import { FileText, Code,  Globe, ArrowUpRight, Sparkles, BookOpen } from "lucide-react"
-import image from "../assets/my_image.jpg"
-import resume from '../assets/Resume_of_Md_Yeasin_Arafat.pdf'
+import { useState, useEffect } from "react";
+import { FileText, Code, Globe, ArrowUpRight, Sparkles, BookOpen } from "lucide-react";
+import axios from "axios";
+import image from "../assets/my_image.jpg";
+import resume from '../assets/Resume_of_Md_Yeasin_Arafat.pdf';
 
 const Header = () => (
   <div className="text-center lg:mb-8 mb-2 px-[5%]">
     <div className="inline-block relative group">
-      <h2 
-        className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]" 
+      <h2
+        className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
         data-aos="zoom-in-up"
         data-aos-duration="600"
       >
         About Me
       </h2>
     </div>
-    <p 
+    <p
       className="mt-2 text-gray-400 max-w-2xl mx-auto text-base sm:text-lg flex items-center justify-center gap-2"
       data-aos="zoom-in-up"
       data-aos-duration="800"
@@ -27,8 +29,8 @@ const Header = () => (
 
 const ProfileImage = () => (
   <div className="flex justify-end items-center sm:p-12 sm:py-0 sm:pb-0 p-0 py-2 pb-2">
-    <div 
-      className="relative group" 
+    <div
+      className="relative group"
       data-aos="fade-up"
       data-aos-duration="1000"
     >
@@ -42,11 +44,11 @@ const ProfileImage = () => (
       <div className="relative">
         <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-full overflow-hidden shadow-[0_0_40px_rgba(120,119,198,0.3)] transform transition-all duration-700 group-hover:scale-105">
           <div className="absolute inset-0 border-4 border-white/20 rounded-full z-20 transition-all duration-700 group-hover:border-white/40 group-hover:scale-105" />
-          
+
           {/* Optimized overlay effects - disabled on mobile */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 z-10 transition-opacity duration-700 group-hover:opacity-0 hidden sm:block" />
           <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-transparent to-blue-500/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden sm:block" />
-          
+
           <img
             src={image}
             alt="Profile"
@@ -66,27 +68,31 @@ const ProfileImage = () => (
   </div>
 );
 
-const StatCard = ({ icon: Icon, color, value, label, description, animation }) => (
+const StatCard = ({ icon: Icon, color, value, label, description, animation, isLoading }) => (
   <div data-aos={animation} data-aos-duration={1300} className="relative group">
     <div className="relative z-10 bg-gray-900/50 backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
       <div className={`absolute -z-10 inset-0 bg-gradient-to-br ${color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}></div>
-      
+
       <div className="flex items-center justify-between mb-4">
         <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/10 transition-transform group-hover:rotate-6">
           <Icon className="w-8 h-8 text-white" />
         </div>
-        <span 
+        <span
           className="text-4xl font-bold text-white"
           data-aos="fade-up-left"
           data-aos-duration="1500"
           data-aos-anchor-placement="top-bottom"
         >
-          {value}
+          {isLoading ? (
+            <div className="w-8 h-8 rounded-full border-4 border-t-transparent border-white animate-spin" />
+          ) : (
+            value
+          )}
         </span>
       </div>
 
       <div>
-        <p 
+        <p
           className="text-sm uppercase tracking-wider text-gray-300 mb-2"
           data-aos="fade-up"
           data-aos-duration="800"
@@ -95,7 +101,7 @@ const StatCard = ({ icon: Icon, color, value, label, description, animation }) =
           {label}
         </p>
         <div className="flex items-center justify-between">
-          <p 
+          <p
             className="text-xs text-gray-400"
             data-aos="fade-up"
             data-aos-duration="1000"
@@ -111,37 +117,83 @@ const StatCard = ({ icon: Icon, color, value, label, description, animation }) =
 );
 
 const AboutPage = () => {
-  // Static data for stat cards
+  const [counts, setCounts] = useState({
+    projectCount: 0,
+    blogCount: 0
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        setIsLoading(true);
+        // Replace with your actual API endpoint
+        const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/stats', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true 
+        });
+
+        if (response.data && response.data.success) {
+          setCounts({
+            projectCount: response.data.data.projectCount,
+            blogCount: response.data.data.blogCount
+          });
+        } else {
+          throw new Error('Failed to fetch data');
+        }
+      } catch (err) {
+        console.error('Error fetching counts:', err);
+        setError('Failed to load data. Please try again later.');
+        // Use fallback values if API fails
+        setCounts({
+          projectCount: 9,
+          blogCount: 9
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
+  // Static data for stat cards with dynamic count values
   const statsData = [
     {
       icon: Code,
       color: "from-[#6366f1] to-[#a855f7]",
-      value: 8, // Static project count
+      value: counts.projectCount, // Dynamic project count
       label: "Total Projects",
       description: "Innovative web solutions crafted",
       animation: "fade-right",
+      isLoading
     },
     {
-      icon: BookOpen, // Changed icon from Award to Book
+      icon: BookOpen,
       color: "from-[#a855f7] to-[#6366f1]",
-      value: 8, // Static blog count
-      label: "Blogs", // Changed from Certificates to Blogs
+      value: counts.blogCount, // Dynamic blog count
+      label: "Blogs",
       description: "Sharing knowledge & insights",
       animation: "fade-up",
+      isLoading
     },
     {
       icon: Globe,
       color: "from-[#6366f1] to-[#a855f7]",
-      value: 2, // Static years of experience (changed to 2)
+      value: 2, // Static years of experience
       label: "Years of Experience",
       description: "Continuous learning journey",
       animation: "fade-left",
+      isLoading: false // This is still static, so no loading state
     },
   ];
 
   return (
     <div
-      className="h-auto pb-[10%] text-white overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%] mt-10 sm-mt-0" 
+      className="h-auto pb-[10%] text-white overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%] mt-10 sm-mt-0"
       id="About"
     >
       <Header />
@@ -149,7 +201,7 @@ const AboutPage = () => {
       <div className="w-full mx-auto pt-8 sm:pt-12 relative">
         <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="space-y-6 text-center lg:text-left">
-            <h2 
+            <h2
               className="text-3xl sm:text-4xl lg:text-5xl font-bold"
               data-aos="fade-right"
               data-aos-duration="1000"
@@ -157,7 +209,7 @@ const AboutPage = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
                 Hello, I'm
               </span>
-              <span 
+              <span
                 className="block mt-2 text-gray-200"
                 data-aos="fade-right"
                 data-aos-duration="1300"
@@ -165,21 +217,18 @@ const AboutPage = () => {
                 MD Yeasin Arafat
               </span>
             </h2>
-            
-            <p 
+
+            <p
               className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed text-justify pb-4 sm:pb-0"
               data-aos="fade-right"
               data-aos-duration="1500"
             >
-              seorang siswa Teknik Jaringan Komputer dan Telekomunikasi yang
-              tertarik dalam pengembangan Front-End. Saya berfokus pada
-              menciptakan pengalaman digital yang menarik dan selalu berusaha
-              memberikan solusi terbaik dalam setiap proyek.
+              a student of Computer and Telecommunications Network Engineering with a passion for Front-End Development. I enjoy creating clean, responsive, and user-friendly web interfaces using modern tools like HTML, CSS, JavaScript, and React. I'm always eager to learn, solve problems, and build meaningful digital experiences
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
               <a href={resume} download='Resume of Md Yeasin Arafat.pdf' className="w-full lg:w-auto">
-                <button 
+                <button
                   data-aos="fade-up"
                   data-aos-duration="800"
                   className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl animate-bounce-slow"
@@ -188,7 +237,7 @@ const AboutPage = () => {
                 </button>
               </a>
               <a href="#Portofolio" className="w-full lg:w-auto">
-                <button 
+                <button
                   data-aos="fade-up"
                   data-aos-duration="1000"
                   className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg border border-[#a855f7]/50 text-[#a855f7] font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 hover:bg-[#a855f7]/10 animate-bounce-slow delay-200"
@@ -197,6 +246,12 @@ const AboutPage = () => {
                 </button>
               </a>
             </div>
+
+            {error && (
+              <div className="text-red-400 text-sm mt-4 animate-pulse">
+                {error}
+              </div>
+            )}
           </div>
 
           <ProfileImage />
