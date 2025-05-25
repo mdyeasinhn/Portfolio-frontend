@@ -106,7 +106,7 @@ export default function FullWidthTabs() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:5000/api/v1/projects', {
+      const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/projects', {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -129,7 +129,7 @@ export default function FullWidthTabs() {
 
   const fetchBlogs = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/v1/blogs', {
+      const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/blogs', {
         headers: {
           'Content-Type': 'application/json',
         }
