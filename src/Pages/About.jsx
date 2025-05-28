@@ -223,7 +223,7 @@ const AboutPage = () => {
               data-aos="fade-right"
               data-aos-duration="1500"
             >
-              a student of Computer and Telecommunications Network Engineering with a passion for Front-End Development. I enjoy creating clean, responsive, and user-friendly web interfaces using modern tools like HTML, CSS, JavaScript, and React. I'm always eager to learn, solve problems, and build meaningful digital experiences
+               student of Computer with a passion for Front-End Development. I enjoy creating clean, responsive, and user-friendly web interfaces using modern tools like HTML, CSS, JavaScript, and React. I'm always eager to learn, solve problems, and build meaningful digital experiences
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">

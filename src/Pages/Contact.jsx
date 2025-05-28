@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
 import axios from 'axios';
 import SocialLinks from "../components/SocialLinks";
@@ -47,7 +47,7 @@ const ContactPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        withCredentials: true 
+        withCredentials: true
       });
 
       // Show success message
@@ -131,7 +131,7 @@ const ContactPage = () => {
               <Share2 className="w-10 h-10 text-[#6366f1] opacity-50" />
             </div>
 
-            <form 
+            <form
               onSubmit={handleSubmit}
               className="space-y-6"
             >
@@ -198,6 +198,7 @@ const ContactPage = () => {
             </form>
           </div>
 
+          {/* right side */}
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-3 py-3 md:p-10 md:py-8 shadow-2xl transform transition-all duration-300 hover:shadow-[#6366f1]/10">
             <SocialLinks />
           </div>
