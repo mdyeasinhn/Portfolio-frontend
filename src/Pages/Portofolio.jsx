@@ -8,13 +8,81 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import CardProject from "../components/CardProject";
-import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Code, Boxes, BookOpen } from "lucide-react";
+import {
+  SiHtml5,
+  SiCss3,
+  SiJavascript,
+  SiTailwindcss,
+  SiReact,
+  SiVite,
+  SiNodedotjs,
+  SiBootstrap,
+  SiFirebase,
+  SiMongodb,
+  SiMongoose,
+  SiPostgresql,
+  SiPrisma,
+  SiRedux,
+  SiNextdotjs,
+  SiTypescript,
+  SiGit,
+  SiExpress,
+  SiPostman,
+  SiVercel,
+} from "react-icons/si";
+import CardProject from "../components/CardProject";
 import CardBlog from "../components/CardBlog";
 
+// Define the TechStackIcon component
+const TechStackIcon = ({ IconComponent, language }) => {
+  return (
+    <div className="group p-6 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl">
+      <div className="relative">
+        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
+        <IconComponent
+          className="relative h-16 w-16 md:h-20 md:w-20 transform transition-transform duration-300 text-white"
+        />
+      </div>
+      <span className="text-slate-300 font-semibold text-sm md:text-base tracking-wide group-hover:text-white transition-colors duration-300">
+        {language}
+      </span>
+    </div>
+  );
+};
+
+TechStackIcon.propTypes = {
+  IconComponent: PropTypes.elementType.isRequired,
+  language: PropTypes.string.isRequired,
+};
+
+// Define the techStacks array
+const techStacks= [
+  { IconComponent: SiHtml5, language: "HTML" },
+  { IconComponent: SiCss3, language: "CSS" },
+  { IconComponent: SiJavascript, language: "JavaScript" },
+  { IconComponent: SiTypescript, language: "TypeScript" },
+  { IconComponent: SiReact, language: "ReactJS" },
+  { IconComponent: SiNextdotjs, language: "Next.js" },
+  { IconComponent: SiRedux, language: "Redux" },
+  { IconComponent: SiTailwindcss, language: "Tailwind CSS" },
+  { IconComponent: SiBootstrap, language: "Bootstrap" },
+  { IconComponent: SiVite, language: "Vite" },
+  { IconComponent: SiNodedotjs, language: "Node JS" },
+  { IconComponent: SiExpress, language: "Express" },
+  { IconComponent: SiMongodb, language: "MongoDB" },
+  { IconComponent: SiPostgresql, language: "PostgreSQL" },
+  { IconComponent: SiPrisma, language: "Prisma" },
+  { IconComponent: SiMongoose, language: "Mongoose" },
+  { IconComponent: SiGit, language: "Git" },
+  { IconComponent: SiVercel, language: "Vercel" },
+  { IconComponent: SiFirebase, language: "Firebase" },
+  { IconComponent: SiPostman, language: "Postman" },
+];
+
+// ToggleButton component
 const ToggleButton = ({ onClick, isShowingMore }) => (
   <button
     onClick={onClick}
@@ -38,6 +106,7 @@ const ToggleButton = ({ onClick, isShowingMore }) => (
   </button>
 );
 
+// TabPanel component
 function TabPanel({ children, value, index, ...other }) {
   return (
     <div
@@ -69,22 +138,7 @@ function a11yProps(index) {
   };
 }
 
-const techStacks = [
-  { icon: "html.svg", language: "HTML" },
-  { icon: "css.svg", language: "CSS" },
-  { icon: "javascript.svg", language: "JavaScript" },
-  { icon: "tailwind.svg", language: "Tailwind CSS" },
-  { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "vite.svg", language: "Vite" },
-  { icon: "nodejs.svg", language: "Node JS" },
-  { icon: "bootstrap.svg", language: "Bootstrap" },
-  { icon: "firebase.svg", language: "Firebase" },
-  { icon: "mongodb.svg", language: "Mongodb" }, 
-  { icon: "mongoose.svg", language: "Mongoose" }, 
-  { icon: "postgresql.svg", language: "PostgreSQL" }, 
-  { icon: "prisma.svg", language: "Prisma" },
-];
-
+// Main FullWidthTabs component
 export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -106,15 +160,18 @@ export default function FullWidthTabs() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/projects', {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.get(
+        "https://portfolio-server-omega-neon.vercel.app/api/v1/projects",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
-      const projectData = response.data.data.map(project => ({
+      const projectData = response.data.data.map((project) => ({
         ...project,
-        TechStack: project.TechStack || []
+        TechStack: project.TechStack || [],
       }));
 
       setProjects(projectData);
@@ -129,11 +186,14 @@ export default function FullWidthTabs() {
 
   const fetchBlogs = useCallback(async () => {
     try {
-      const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/blogs', {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.get(
+        "https://portfolio-server-omega-neon.vercel.app/api/v1/blogs",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       setBlogs(response.data.data);
     } catch (err) {
@@ -158,11 +218,16 @@ export default function FullWidthTabs() {
     setShowAllBlogs((prev) => !prev);
   }, []);
 
-  const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
+  const displayedProjects = showAllProjects
+    ? projects
+    : projects.slice(0, initialItems);
   const displayedBlogs = showAllBlogs ? blogs : blogs.slice(0, initialBlogs);
 
   return (
-    <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portofolio">
+    <div
+      className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden"
+      id="Portofolio"
+    >
       <div className="text-center pb-10" data-aos="fade-up" data-aos-duration="1000">
         <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
           Portfolio Showcase
@@ -202,7 +267,8 @@ export default function FullWidthTabs() {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: "linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
+                background:
+                  "linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
                 backdropFilter: "blur(8px)",
                 zIndex: 0,
                 border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -239,7 +305,8 @@ export default function FullWidthTabs() {
                   },
                   "&.Mui-selected": {
                     color: "#ffffff",
-                    background: "linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))",
+                    background:
+                      "linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))",
                     boxShadow: "0 4px 20px -5px rgba(99, 102, 241, 0.4)",
                     "& svg": {
                       color: "#ffffff",
@@ -288,8 +355,16 @@ export default function FullWidthTabs() {
                     {displayedProjects.map((project, index) => (
                       <div
                         key={project.id || index}
-                        data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
-                        data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
+                        data-aos={
+                          index % 3 === 0
+                            ? "fade-up-right"
+                            : index % 3 === 1
+                            ? "fade-up"
+                            : "fade-up-left"
+                        }
+                        data-aos-duration={
+                          index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
+                        }
                       >
                         <CardProject
                           Img={project.image}
@@ -327,9 +402,9 @@ export default function FullWidthTabs() {
                     {displayedBlogs.map((blog, index) => (
                       <div
                         key={blog._id || index}
-                        data-aos="fade-up" // Simplified animation for column layout
+                        data-aos="fade-up"
                         data-aos-duration="1000"
-                        className="mb-8" // Add margin bottom for spacing between stacked items
+                        className="mb-8"
                       >
                         <CardBlog
                           Img={blog.image}
@@ -365,10 +440,21 @@ export default function FullWidthTabs() {
                   {techStacks.map((stack, index) => (
                     <div
                       key={index}
-                      data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
-                      data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
+                      data-aos={
+                        index % 3 === 0
+                          ? "fade-up-right"
+                          : index % 3 === 1
+                          ? "fade-up"
+                          : "fade-up-left"
+                      }
+                      data-aos-duration={
+                        index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
+                      }
                     >
-                      <TechStackIcon TechStackIcon={stack.icon} Language={stack.language} />
+                      <TechStackIcon
+                        IconComponent={stack.IconComponent}
+                        language={stack.language}
+                      />
                     </div>
                   ))}
                 </div>
