@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { FileText, Code, Globe, ArrowUpRight, Sparkles, BookOpen } from "lucide-react";
 import axios from "axios";
-import image from "../assets/my_image.jpg";
+import { BASE_URL } from "../config/baseUrl";
+import image from "../assets/yeasin.png_1_2_20 1.png";
 import resume from '../assets/Resume_of_Md_Yeasin_Arafat.pdf';
 
 const Header = () => (
@@ -52,8 +53,9 @@ const ProfileImage = () => (
           <img
             src={image}
             alt="Profile"
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
-            loading="lazy"
+            className="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
+            loading="eager"
+            srcSet={`${image} 1x`}
           />
 
           {/* Advanced hover effects - desktop only */}
@@ -129,12 +131,7 @@ const AboutPage = () => {
       try {
         setIsLoading(true);
         // Replace with your actual API endpoint
-        const response = await axios.get('https://portfolio-server-omega-neon.vercel.app/api/v1/stats', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true 
-        });
+        const response = await axios.get(`${BASE_URL}/stats`);
 
         if (response.data && response.data.success) {
           setCounts({
@@ -183,9 +180,9 @@ const AboutPage = () => {
     {
       icon: Globe,
       color: "from-[#6366f1] to-[#a855f7]",
-      value: 2, // Static years of experience
+      value: 1, // Static years of experience
       label: "Years of Experience",
-      description: "Continuous learning journey",
+      description: "Building digital solutions",
       animation: "fade-left",
       isLoading: false // This is still static, so no loading state
     },
@@ -223,7 +220,7 @@ const AboutPage = () => {
               data-aos="fade-right"
               data-aos-duration="1500"
             >
-               student of Computer with a passion for Front-End Development. I enjoy creating clean, responsive, and user-friendly web interfaces using modern tools like HTML, CSS, JavaScript, and React. I'm always eager to learn, solve problems, and build meaningful digital experiences
+              Junior Software Engineer building modern web applications with React, Next.js, and TypeScript. Focused on creating responsive, user-friendly interfaces and scalable solutions that deliver real impact.
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
@@ -257,7 +254,7 @@ const AboutPage = () => {
           <ProfileImage />
         </div>
 
-        <a href="#Portofolio">
+        <a href="#Experience">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 cursor-pointer">
             {statsData.map((stat) => (
               <StatCard key={stat.label} {...stat} />

@@ -1,18 +1,10 @@
-
 import PropTypes from "prop-types";
-// TechStackIcon component
+
 const TechStackIcon = ({ IconComponent, language }) => {
   return (
-    <div className="group p-6 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl">
-      <div className="relative">
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
-        <IconComponent
-          className="relative h-16 w-16 md:h-20 md:w-20 transform transition-transform duration-300 text-white tech-icon"
-        />
-      </div>
-      <span className="text-slate-300 font-semibold text-sm md:text-base tracking-wide group-hover:text-white transition-colors duration-300">
-        {language}
-      </span>
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/70 hover:bg-slate-900 transition-all duration-200 group cursor-pointer">
+      <IconComponent className="w-5 h-5 text-blue-400 group-hover:-translate-y-0.5 transition-transform duration-200" />
+      <span className="text-sm text-gray-200 group-hover:text-blue-300 transition-colors">{language}</span>
     </div>
   );
 };
@@ -21,3 +13,5 @@ TechStackIcon.propTypes = {
   IconComponent: PropTypes.elementType.isRequired,
   language: PropTypes.string.isRequired,
 };
+
+export default TechStackIcon;

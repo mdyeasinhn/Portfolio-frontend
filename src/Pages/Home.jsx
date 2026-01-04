@@ -18,6 +18,7 @@ const StatusBadge = memo(() => (
     </div>
   </div>
 ));
+StatusBadge.displayName = 'StatusBadge';
 
 const MainTitle = memo(() => (
   <div className="space-y-2" data-aos="fade-up" data-aos-delay="600">
@@ -38,12 +39,14 @@ const MainTitle = memo(() => (
     </h1>
   </div>
 ));
+MainTitle.displayName = 'MainTitle';
 
 const TechStack = memo(({ tech }) => (
   <div className="px-4 py-2 hidden sm:block rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-sm text-gray-300 hover:bg-white/10 transition-colors">
     {tech}
   </div>
 ));
+TechStack.displayName = 'TechStack';
 
 const CTAButton = memo(({ href, text, icon: Icon }) => (
   <a href={href}>
@@ -61,6 +64,7 @@ const CTAButton = memo(({ href, text, icon: Icon }) => (
     </button>
   </a>
 ));
+CTAButton.displayName = 'CTAButton';
 
 const SocialLink = memo(({ icon: Icon, link }) => (
   <a href={link} target="_blank" rel="noopener noreferrer">
@@ -72,13 +76,14 @@ const SocialLink = memo(({ icon: Icon, link }) => (
     </button>
   </a>
 ));
+SocialLink.displayName = 'SocialLink';
 
 // Constants
 const TYPING_SPEED = 100;
 const ERASING_SPEED = 50;
 const PAUSE_DURATION = 2000;
 const WORDS = ["Tech Enthusiast"];
-const TECH_STACK = ["React", "Javascript", "Node.js", "Tailwind"];
+const TECH_STACK = ["React", "Typescript", "Node.js", "Tailwind"];
 const SOCIAL_LINKS = [
   { icon: Github, link: "https://github.com/mdyeasinhn" },
   { icon: Linkedin, link: "https://www.linkedin.com/in/mdyeasinhn/" },
@@ -143,7 +148,7 @@ const Home = () => {
 
   // Lottie configuration
   const lottieOptions = {
-    src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
+    src: "https://lottie.host/4953c6ff-f8b0-45cd-b667-baf472bba2ae/EHnn08K4mW.lottie",
     loop: true,
     autoplay: true,
     rendererSettings: {

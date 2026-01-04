@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../config/baseUrl";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
@@ -39,16 +40,9 @@ import CardBlog from "../components/CardBlog";
 // Define the TechStackIcon component
 const TechStackIcon = ({ IconComponent, language }) => {
   return (
-    <div className="group p-6 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 ease-in-out flex flex-col items-center justify-center gap-3 hover:scale-105 cursor-pointer shadow-lg hover:shadow-xl">
-      <div className="relative">
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-50 blur transition duration-300"></div>
-        <IconComponent
-          className="relative h-16 w-16 md:h-20 md:w-20 transform transition-transform duration-300 text-white"
-        />
-      </div>
-      <span className="text-slate-300 font-semibold text-sm md:text-base tracking-wide group-hover:text-white transition-colors duration-300">
-        {language}
-      </span>
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/70 hover:bg-slate-900 transition-all duration-200 group cursor-pointer">
+      <IconComponent className="w-5 h-5 text-blue-400 group-hover:-translate-y-0.5 transition-transform duration-200" />
+      <span className="text-sm text-gray-200 group-hover:text-blue-300 transition-colors">{language}</span>
     </div>
   );
 };
@@ -58,29 +52,35 @@ TechStackIcon.propTypes = {
   language: PropTypes.string.isRequired,
 };
 
-// Define the techStacks array
-const techStacks= [
-  { IconComponent: SiHtml5, language: "HTML" },
-  { IconComponent: SiCss3, language: "CSS" },
-  { IconComponent: SiJavascript, language: "JavaScript" },
-  { IconComponent: SiTypescript, language: "TypeScript" },
-  { IconComponent: SiReact, language: "ReactJS" },
-  { IconComponent: SiNextdotjs, language: "Next.js" },
-  { IconComponent: SiRedux, language: "Redux" },
-  { IconComponent: SiTailwindcss, language: "Tailwind CSS" },
-  { IconComponent: SiBootstrap, language: "Bootstrap" },
-  { IconComponent: SiVite, language: "Vite" },
-  { IconComponent: SiNodedotjs, language: "Node JS" },
-  { IconComponent: SiExpress, language: "Express" },
-  { IconComponent: SiMongodb, language: "MongoDB" },
-  { IconComponent: SiPostgresql, language: "PostgreSQL" },
-  { IconComponent: SiPrisma, language: "Prisma" },
-  { IconComponent: SiMongoose, language: "Mongoose" },
-  { IconComponent: SiGit, language: "Git" },
-  { IconComponent: SiVercel, language: "Vercel" },
-  { IconComponent: SiFirebase, language: "Firebase" },
-  { IconComponent: SiPostman, language: "Postman" },
-];
+// Define the techStacks array with categories
+const techStacks = {
+  frontend: [
+    { IconComponent: SiHtml5, language: "HTML" },
+    { IconComponent: SiCss3, language: "CSS" },
+    { IconComponent: SiJavascript, language: "JavaScript" },
+    { IconComponent: SiTypescript, language: "TypeScript" },
+    { IconComponent: SiReact, language: "ReactJS" },
+    { IconComponent: SiNextdotjs, language: "Next.js" },
+    { IconComponent: SiRedux, language: "Redux" },
+    { IconComponent: SiTailwindcss, language: "Tailwind CSS" },
+    { IconComponent: SiBootstrap, language: "Bootstrap" },
+    { IconComponent: SiVite, language: "Vite" },
+  ],
+  backend: [
+    { IconComponent: SiNodedotjs, language: "Node JS" },
+    { IconComponent: SiExpress, language: "Express" },
+    { IconComponent: SiMongodb, language: "MongoDB" },
+    { IconComponent: SiPostgresql, language: "PostgreSQL" },
+    { IconComponent: SiPrisma, language: "Prisma" },
+    { IconComponent: SiMongoose, language: "Mongoose" },
+  ],
+  tools: [
+    { IconComponent: SiGit, language: "Git" },
+    { IconComponent: SiVercel, language: "Vercel" },
+    { IconComponent: SiFirebase, language: "Firebase" },
+    { IconComponent: SiPostman, language: "Postman" },
+  ],
+};
 
 // ToggleButton component
 const ToggleButton = ({ onClick, isShowingMore }) => (
@@ -156,67 +156,46 @@ export default function FullWidthTabs() {
     AOS.init({ once: false });
   }, []);
 
-  const fetchProjects = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(
-        "https://portfolio-server-omega-neon.vercel.app/api/v1/projects",
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const projectData = response.data.data.map((project) => ({
-        ...project,
-        TechStack: project.TechStack || [],
-      }));
-
-      setProjects(projectData);
-      localStorage.setItem("projects", JSON.stringify(projectData));
-    } catch (err) {
-      console.error("Error fetching projects:", err);
-      setError(err.response?.data?.message || "Failed to fetch projects");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const fetchBlogs = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        "https://portfolio-server-omega-neon.vercel.app/api/v1/blogs",
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      setBlogs(response.data.data);
-    } catch (err) {
-      console.error("Error fetching blogs:", err);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchProjects();
-    fetchBlogs();
-  }, [fetchProjects, fetchBlogs]);
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const [projectsRes, blogsRes] = await Promise.all([
+          axios.get(`${BASE_URL}/projects`),
+          axios.get(`${BASE_URL}/blogs`)
+        ]);
+
+        const projectData = projectsRes.data.data.map((project) => ({
+          ...project,
+          TechStack: project.TechStack || [],
+        }));
+
+        setProjects(projectData);
+        setBlogs(blogsRes.data.data);
+        localStorage.setItem("projects", JSON.stringify(projectData));
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err.response?.data?.message || "Failed to fetch data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const toggleShowMoreProjects = useCallback(() => {
+  const toggleShowMoreProjects = () => {
     setShowAllProjects((prev) => !prev);
-  }, []);
+  };
 
-  const toggleShowMoreBlogs = useCallback(() => {
+  const toggleShowMoreBlogs = () => {
     setShowAllBlogs((prev) => !prev);
-  }, []);
+  };
 
   const displayedProjects = showAllProjects
     ? projects
@@ -435,28 +414,41 @@ export default function FullWidthTabs() {
 
             {/* TECH STACK TAB */}
             <TabPanel value={value} index={2} dir={theme.direction}>
-              <div className="container mx-auto flex justify-center items-center overflow-hidden pb-[5%]">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-8 gap-5">
-                  {techStacks.map((stack, index) => (
-                    <div
-                      key={index}
-                      data-aos={
-                        index % 3 === 0
-                          ? "fade-up-right"
-                          : index % 3 === 1
-                          ? "fade-up"
-                          : "fade-up-left"
-                      }
-                      data-aos-duration={
-                        index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
-                      }
-                    >
-                      <TechStackIcon
-                        IconComponent={stack.IconComponent}
-                        language={stack.language}
-                      />
-                    </div>
-                  ))}
+              <div className="container mx-auto overflow-hidden pb-[5%] space-y-8">
+                {/* Frontend */}
+                <div>
+                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Frontend</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {techStacks.frontend.map((stack, index) => (
+                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Backend */}
+                <div>
+                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Backend</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {techStacks.backend.map((stack, index) => (
+                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Tools */}
+                <div>
+                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Tools</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {techStacks.tools.map((stack, index) => (
+                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </TabPanel>
