@@ -17,10 +17,10 @@ const Experience = () => {
         {/* Experience Card */}
         <div className="relative group" data-aos="fade-up" data-aos-delay="200">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-          
+
           <div className="relative bg-gray-900/50 backdrop-blur-lg rounded-2xl p-8 border border-white/10 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-50"></div>
-            
+
             <div className="relative z-10">
               {/* Company & Status */}
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
@@ -34,10 +34,10 @@ const Experience = () => {
                       Dhaka, Bangladesh
                     </span>
                     <span className="hidden sm:inline">•</span>
-                    <span className="text-gray-500">Remote-friendly</span>
+                    <span>Onsite</span>
                   </div>
                 </div>
-                
+
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                   <span className="text-green-400 text-sm font-medium">Currently Working</span>
@@ -57,33 +57,45 @@ const Experience = () => {
 
               {/* Description */}
               <p className="text-gray-300 leading-relaxed mb-6">
-                Working with the engineering team at Octopi Digital to develop scalable web applications and digital solutions, contributing to full-stack development, code quality, and feature implementation.
+                Working as a backend-focused software engineer, building full-stack web applications with scalable APIs while ensuring responsive, performant user interfaces across devices.
               </p>
 
               {/* Responsibilities */}
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start gap-3 text-gray-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0"></div>
-                  <span>Developed responsive, modern websites and web applications for diverse clients across multiple industries</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0" />
+                  <span>
+                    Build and maintain full-stack web applications with primary focus on backend development
+                  </span>
                 </li>
+
                 <li className="flex items-start gap-3 text-gray-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0"></div>
-                  <span>Utilized cutting-edge technologies including React, Next.js, and Tailwind CSS to deliver high-quality solutions</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0" />
+                  <span>
+                    Design and implement RESTful APIs, authentication, and database logic
+                  </span>
                 </li>
+
                 <li className="flex items-start gap-3 text-gray-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0"></div>
-                  <span>Collaborated closely with designers, marketers, and backend developers to ensure seamless project delivery</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0" />
+                  <span>
+                    Deliver full-stack features integrated with responsive, mobile-first React/Next.js UIs
+                  </span>
                 </li>
+
                 <li className="flex items-start gap-3 text-gray-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0"></div>
-                  <span>Improved user experience, site speed, and conversion rates through performance optimization techniques</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] mt-2 flex-shrink-0" />
+                  <span>
+                    Optimize performance, scalability, and maintainable code for production systems
+                  </span>
                 </li>
               </ul>
 
+
               {/* Visit Company Button */}
-              <a 
-                href="https://octopi-digital.com/" 
-                target="_blank" 
+              <a
+                href="https://octopi-digital.com/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block"
               >

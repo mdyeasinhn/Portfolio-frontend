@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
 import axios from 'axios';
+import { BASE_URL } from "../config/baseUrl";
 import SocialLinks from "../components/SocialLinks";
 import Swal from "sweetalert2";
 import AOS from "aos";
@@ -43,7 +44,7 @@ const ContactPage = () => {
 
     try {
       // Send data to your Express backend
-      const response = await axios.post('https://portfolio-server-omega-neon.vercel.app/api/v1/contacts', formData, {
+      const response = await axios.post(`${BASE_URL}/contacts`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },

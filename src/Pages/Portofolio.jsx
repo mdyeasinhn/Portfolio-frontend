@@ -1,43 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config/baseUrl";
-import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Code, Boxes, BookOpen } from "lucide-react";
-import {
-  SiHtml5,
-  SiCss3,
-  SiJavascript,
-  SiTailwindcss,
-  SiReact,
-  SiVite,
-  SiNodedotjs,
-  SiBootstrap,
-  SiFirebase,
-  SiMongodb,
-  SiMongoose,
-  SiPostgresql,
-  SiPrisma,
-  SiRedux,
-  SiNextdotjs,
-  SiTypescript,
-  SiGit,
-  SiExpress,
-  SiPostman,
-  SiVercel,
-} from "react-icons/si";
 import CardProject from "../components/CardProject";
 import CardBlog from "../components/CardBlog";
+import { techStacks } from "../components/TechStacks";
 
-// Define the TechStackIcon component
 const TechStackIcon = ({ IconComponent, language }) => {
   return (
     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/70 hover:bg-slate-900 transition-all duration-200 group cursor-pointer">
@@ -47,42 +17,6 @@ const TechStackIcon = ({ IconComponent, language }) => {
   );
 };
 
-TechStackIcon.propTypes = {
-  IconComponent: PropTypes.elementType.isRequired,
-  language: PropTypes.string.isRequired,
-};
-
-// Define the techStacks array with categories
-const techStacks = {
-  frontend: [
-    { IconComponent: SiHtml5, language: "HTML" },
-    { IconComponent: SiCss3, language: "CSS" },
-    { IconComponent: SiJavascript, language: "JavaScript" },
-    { IconComponent: SiTypescript, language: "TypeScript" },
-    { IconComponent: SiReact, language: "ReactJS" },
-    { IconComponent: SiNextdotjs, language: "Next.js" },
-    { IconComponent: SiRedux, language: "Redux" },
-    { IconComponent: SiTailwindcss, language: "Tailwind CSS" },
-    { IconComponent: SiBootstrap, language: "Bootstrap" },
-    { IconComponent: SiVite, language: "Vite" },
-  ],
-  backend: [
-    { IconComponent: SiNodedotjs, language: "Node JS" },
-    { IconComponent: SiExpress, language: "Express" },
-    { IconComponent: SiMongodb, language: "MongoDB" },
-    { IconComponent: SiPostgresql, language: "PostgreSQL" },
-    { IconComponent: SiPrisma, language: "Prisma" },
-    { IconComponent: SiMongoose, language: "Mongoose" },
-  ],
-  tools: [
-    { IconComponent: SiGit, language: "Git" },
-    { IconComponent: SiVercel, language: "Vercel" },
-    { IconComponent: SiFirebase, language: "Firebase" },
-    { IconComponent: SiPostman, language: "Postman" },
-  ],
-};
-
-// ToggleButton component
 const ToggleButton = ({ onClick, isShowingMore }) => (
   <button
     onClick={onClick}
@@ -106,41 +40,7 @@ const ToggleButton = ({ onClick, isShowingMore }) => (
   </button>
 );
 
-// TabPanel component
-function TabPanel({ children, value, index, ...other }) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: { xs: 1, sm: 3 } }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
-  };
-}
-
-// Main FullWidthTabs component
 export default function FullWidthTabs() {
-  const theme = useTheme();
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
   const [blogs, setBlogs] = useState([]);
@@ -185,28 +85,11 @@ export default function FullWidthTabs() {
     fetchData();
   }, []);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const toggleShowMoreProjects = () => {
-    setShowAllProjects((prev) => !prev);
-  };
-
-  const toggleShowMoreBlogs = () => {
-    setShowAllBlogs((prev) => !prev);
-  };
-
-  const displayedProjects = showAllProjects
-    ? projects
-    : projects.slice(0, initialItems);
+  const displayedProjects = showAllProjects ? projects : projects.slice(0, initialItems);
   const displayedBlogs = showAllBlogs ? blogs : blogs.slice(0, initialBlogs);
 
   return (
-    <div
-      className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden"
-      id="Portofolio"
-    >
+    <div className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden" id="Portofolio">
       <div className="text-center pb-10" data-aos="fade-up" data-aos-duration="1000">
         <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
           Portfolio Showcase
@@ -229,121 +112,57 @@ export default function FullWidthTabs() {
       )}
 
       {!isLoading && (
-        <Box sx={{ width: "100%" }}>
-          <AppBar
-            position="static"
-            elevation={0}
-            sx={{
-              bgcolor: "transparent",
-              borderRadius: "12px",
-              position: "relative",
-              overflow: "hidden",
-              mb: 4,
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background:
-                  "linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
-                backdropFilter: "blur(8px)",
-                zIndex: 0,
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                borderRadius: "inherit",
-              },
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              textColor="inherit"
-              indicatorColor="primary"
-              variant="fullWidth"
-              sx={{
-                minHeight: "72px",
-                position: "relative",
-                zIndex: 1,
-                "& .MuiTab-root": {
-                  fontSize: { xs: "0.875rem", md: "1rem" },
-                  fontWeight: "600",
-                  color: "#cbd5e1",
-                  textTransform: "none",
-                  transition: "all 0.3s ease",
-                  padding: "20px 16px",
-                  margin: "0 4px",
-                  borderRadius: "8px",
-                  "&:hover": {
-                    color: "#ffffff",
-                    background: "rgba(255, 255, 255, 0.1)",
-                    "& svg": {
-                      transform: "scale(1.1)",
-                      color: "#a78bfa",
-                    },
-                  },
-                  "&.Mui-selected": {
-                    color: "#ffffff",
-                    background:
-                      "linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))",
-                    boxShadow: "0 4px 20px -5px rgba(99, 102, 241, 0.4)",
-                    "& svg": {
-                      color: "#ffffff",
-                    },
-                  },
-                },
-                "& .MuiTabs-indicator": {
-                  height: "3px",
-                  background: "linear-gradient(90deg, #6366f1, #a855f7)",
-                  borderRadius: "3px 3px 0 0",
-                  bottom: 0,
-                },
-              }}
-            >
-              <Tab
-                icon={<Code className="w-5 h-5 transition-all duration-300" />}
-                iconPosition="start"
-                label="Projects"
-                {...a11yProps(0)}
-              />
-              <Tab
-                icon={<BookOpen className="w-5 h-5 transition-all duration-300" />}
-                iconPosition="start"
-                label="Blog"
-                {...a11yProps(1)}
-              />
-              <Tab
-                icon={<Boxes className="w-5 h-5 transition-all duration-300" />}
-                iconPosition="start"
-                label="Tech Stack"
-                {...a11yProps(2)}
-              />
-            </Tabs>
-          </AppBar>
+        <div className="w-full">
+          {/* Modern Segmented Control Tabs */}
+          <div className="flex justify-center mb-8" data-aos="fade-up" data-aos-delay="200">
+            <div className="inline-flex p-1 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800">
+              <button
+                onClick={() => setValue(0)}
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  value === 0
+                    ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white shadow-lg shadow-purple-500/30"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-slate-800/50"
+                }`}
+              >
+                <Code className="w-4 h-4" />
+                Projects
+              </button>
+              <button
+                onClick={() => setValue(1)}
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  value === 1
+                    ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white shadow-lg shadow-purple-500/30"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-slate-800/50"
+                }`}
+              >
+                <BookOpen className="w-4 h-4" />
+                Blog
+              </button>
+              <button
+                onClick={() => setValue(2)}
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  value === 2
+                    ? "bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white shadow-lg shadow-purple-500/30"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-slate-800/50"
+                }`}
+              >
+                <Boxes className="w-4 h-4" />
+                Tech Stack
+              </button>
+            </div>
+          </div>
 
-          <SwipeableViews
-            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-            index={value}
-            onChangeIndex={setValue}
-          >
-            {/* PROJECTS TAB */}
-            <TabPanel value={value} index={0} dir={theme.direction}>
+          {/* PROJECTS TAB */}
+          {value === 0 && (
+            <div>
               <div className="container mx-auto flex justify-center items-center overflow-hidden">
                 {projects.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-5">
                     {displayedProjects.map((project, index) => (
                       <div
                         key={project.id || index}
-                        data-aos={
-                          index % 3 === 0
-                            ? "fade-up-right"
-                            : index % 3 === 1
-                            ? "fade-up"
-                            : "fade-up-left"
-                        }
-                        data-aos-duration={
-                          index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"
-                        }
+                        data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
+                        data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
                       >
                         <CardProject
                           Img={project.image}
@@ -356,35 +175,25 @@ export default function FullWidthTabs() {
                     ))}
                   </div>
                 ) : (
-                  !isLoading && (
-                    <div className="text-center py-10 text-gray-400">
-                      No projects found
-                    </div>
-                  )
+                  <div className="text-center py-10 text-gray-400">No projects found</div>
                 )}
               </div>
               {projects.length > initialItems && (
                 <div className="mt-8 w-full flex justify-center">
-                  <ToggleButton
-                    onClick={toggleShowMoreProjects}
-                    isShowingMore={showAllProjects}
-                  />
+                  <ToggleButton onClick={() => setShowAllProjects(!showAllProjects)} isShowingMore={showAllProjects} />
                 </div>
               )}
-            </TabPanel>
+            </div>
+          )}
 
-            {/* BLOG TAB */}
-            <TabPanel value={value} index={1} dir={theme.direction}>
+          {/* BLOG TAB */}
+          {value === 1 && (
+            <div>
               <div className="container mx-auto flex justify-center items-center overflow-hidden">
                 {blogs.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 2xl:grid-cols-1 gap-5 w-full max-w-4xl">
                     {displayedBlogs.map((blog, index) => (
-                      <div
-                        key={blog._id || index}
-                        data-aos="fade-up"
-                        data-aos-duration="1000"
-                        className="mb-8"
-                      >
+                      <div key={blog._id || index} data-aos="fade-up" data-aos-duration="1000" className="mb-8">
                         <CardBlog
                           Img={blog.image}
                           Title={blog.title}
@@ -397,63 +206,55 @@ export default function FullWidthTabs() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-10 text-gray-400">
-                    No blogs found
-                  </div>
+                  <div className="text-center py-10 text-gray-400">No blogs found</div>
                 )}
               </div>
               {blogs.length > initialBlogs && (
                 <div className="mt-8 w-full flex justify-center">
-                  <ToggleButton
-                    onClick={toggleShowMoreBlogs}
-                    isShowingMore={showAllBlogs}
-                  />
+                  <ToggleButton onClick={() => setShowAllBlogs(!showAllBlogs)} isShowingMore={showAllBlogs} />
                 </div>
               )}
-            </TabPanel>
+            </div>
+          )}
 
-            {/* TECH STACK TAB */}
-            <TabPanel value={value} index={2} dir={theme.direction}>
-              <div className="container mx-auto overflow-hidden pb-[5%] space-y-8">
-                {/* Frontend */}
-                <div>
-                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Frontend</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                    {techStacks.frontend.map((stack, index) => (
-                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
-                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Backend */}
-                <div>
-                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Backend</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                    {techStacks.backend.map((stack, index) => (
-                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
-                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Tools */}
-                <div>
-                  <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Tools</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                    {techStacks.tools.map((stack, index) => (
-                      <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
-                        <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
-                      </div>
-                    ))}
-                  </div>
+          {/* TECH STACK TAB */}
+          {value === 2 && (
+            <div className="container mx-auto overflow-hidden pb-[5%] space-y-8">
+              <div>
+                <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Frontend</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {techStacks.frontend.map((stack, index) => (
+                    <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                      <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                    </div>
+                  ))}
                 </div>
               </div>
-            </TabPanel>
-          </SwipeableViews>
-        </Box>
+              
+              <div>
+                <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Backend</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {techStacks.backend.map((stack, index) => (
+                    <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                      <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-sm text-gray-400 uppercase tracking-wide mb-4">Tools</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {techStacks.tools.map((stack, index) => (
+                    <div key={index} data-aos="fade-up" data-aos-duration="800" data-aos-delay={index * 50}>
+                      <TechStackIcon IconComponent={stack.IconComponent} language={stack.language} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
