@@ -1,2 +1,2 @@
-export const BASE_URL = "https://portfolio-server-omega-neon.vercel.app/api/v1";
+export const BASE_URL = "https://portfolio-server-ebon-two.vercel.app/api/v1";
 // export const BASE_URL = "http://localhost:5000/api/v1";

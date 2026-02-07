@@ -10,6 +10,7 @@ import {
   Package,
 } from "lucide-react";
 import axios from "axios";
+import { BASE_URL } from "../config/baseUrl";
 
 // TechBadge component
 const TechBadge = ({ tech }) => (
@@ -74,8 +75,8 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`https://portfolio-server-omega-neon.vercel.app/api/v1/projects/${id}`,{
-          withCredentials: true 
+        const response = await axios.get(`${BASE_URL}/projects/${id}`, {
+          withCredentials: true
         });
         setProject(response.data.data);
       } catch (err) {
