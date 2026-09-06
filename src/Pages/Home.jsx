@@ -1,9 +1,9 @@
 import  { useState, useEffect, useCallback, memo } from "react"
 import { Github, Linkedin, Mail, ExternalLink, Instagram, Sparkles } from "lucide-react"
-import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+
 import AOS from 'aos'
 import 'aos/dist/aos.css'
-
+import animationImg from '../assets/Animation1.gif'
 // Memoized Components
 const StatusBadge = memo(() => (
   <div className="inline-block animate-float lg:mx-0" data-aos="zoom-in" data-aos-delay="400">
@@ -90,7 +90,7 @@ const SOCIAL_LINKS = [
   { icon: Instagram, link: "https://www.instagram.com/mdyeasinhn" }
 ];
 
-const Home = () => {
+const   Home = () => {
   const [text, setText] = useState("")
   const [isTyping, setIsTyping] = useState(true)
   const [wordIndex, setWordIndex] = useState(0)
@@ -146,27 +146,12 @@ const Home = () => {
     return () => clearTimeout(timeout);
   }, [handleTyping]);
 
-  // Lottie configuration
-  const lottieOptions = {
-    src: "https://lottie.host/4953c6ff-f8b0-45cd-b667-baf472bba2ae/EHnn08K4mW.lottie",
-    loop: true,
-    autoplay: true,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-      progressiveLoad: true,
-    },
-    style: { width: "100%", height: "100%" },
-    className: `w-full h-full transition-all duration-500 ${
-      isHovering 
-        ? "scale-[180%] sm:scale-[160%] md:scale-[150%] lg:scale-[145%] rotate-2" 
-        : "scale-[175%] sm:scale-[155%] md:scale-[145%] lg:scale-[140%]"
-    }`
-  };
+
 
   return (
     <div className="min-h-screen bg-[#030014] overflow-hidden" id="Home">
       <div className={`relative z-10 transition-all duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"}`}>
-        <div className="container mx-auto px-[5%] sm:px-6 lg:px-[0%] min-h-screen">
+        <div className="container mx-auto px-[5%] sm:px-[5%] lg:px-[10%] min-h-screen">
           <div className="flex flex-col lg:flex-row items-center justify-center h-screen md:justify-between gap-0 sm:gap-12 lg:gap-20">
             {/* Left Column */}
             <div className="w-full lg:w-1/2 space-y-6 sm:space-y-8 text-left lg:text-left order-1 lg:order-1 lg:mt-0"
@@ -225,10 +210,16 @@ const Home = () => {
                 }`}>
                 </div>
 
-                <div className={`relative z-10 w-full opacity-90 transform transition-transform duration-500 ${
-                  isHovering ? "scale-105" : "scale-100"
-                }`}>
-                  <DotLottieReact {...lottieOptions} />
+                <div className="relative z-10 w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] lg:max-w-[300px] xl:max-w-[280px] aspect-square opacity-90 mx-auto">
+                  <img 
+                    src={animationImg} 
+                    alt="Animation" 
+                    className={`w-full h-full object-contain transition-all duration-500 ${
+                      isHovering 
+                        ? "scale-[180%] sm:scale-[160%] md:scale-[150%] lg:scale-[145%] rotate-2" 
+                        : "scale-[175%] sm:scale-[155%] md:scale-[145%] lg:scale-[140%]"
+                    }`}
+                  />
                 </div>
 
                 <div className={`absolute inset-0 pointer-events-none transition-all duration-700 ${
