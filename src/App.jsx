@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import "./index.css";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
@@ -12,6 +12,8 @@ import ProjectDetails from "./components/ProjectDetail";
 import WelcomeScreen from "./Pages/WelcomeScreen";
 import { AnimatePresence } from 'framer-motion';
 import BlogDetails from "./components/BlogDetails";
+
+const SkillsSection = lazy(() => import("./components/SkillsSection"));
 
 const LandingPage = ({ showWelcome, setShowWelcome }) => {
   return (
